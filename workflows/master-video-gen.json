@@ -1,0 +1,151 @@
+{
+  "_comment": "Master Video Generation Workflow - Combines AnimateDiff, Face Control, Pose Control, and Sliders",
+  "last_node_id": 25,
+  "last_link_id": 35,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "pos": [50, 50],
+      "size": [315, 98],
+      "widgets_values": ["Realistic_Vision_V5.1_fp16-no-ema.safetensors"]
+    },
+    {
+      "id": 2,
+      "type": "CLIPTextEncode",
+      "pos": [400, 50],
+      "size": [400, 200],
+      "widgets_values": ["a beautiful woman, realistic, high quality, cinematic lighting, 4k"]
+    },
+    {
+      "id": 3,
+      "type": "CLIPTextEncode",
+      "pos": [400, 280],
+      "size": [400, 200],
+      "widgets_values": ["blurry, low quality, distorted, deformed, ugly, bad anatomy"]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [50, 200],
+      "size": [315, 106],
+      "widgets_values": [512, 512, 16]
+    },
+    {
+      "id": 5,
+      "type": "ADE_AnimateDiffLoaderWithContext",
+      "pos": [50, 350],
+      "size": [315, 156],
+      "widgets_values": ["mm_sd_v15_v2.ckpt", "sqrt_linear (AnimateDiff)", 16]
+    },
+    {
+      "id": 6,
+      "type": "LoraLoader",
+      "pos": [50, 550],
+      "size": [315, 126],
+      "widgets_values": ["age_slider_v2.safetensors", 0.5, 0.5],
+      "_note": "Adjust strength: positive = older, negative = younger"
+    },
+    {
+      "id": 7,
+      "type": "LoraLoader",
+      "pos": [50, 720],
+      "size": [315, 126],
+      "widgets_values": ["muscle_slider_v1.safetensors", 0.3, 0.3],
+      "_note": "Adjust strength: positive = more muscular"
+    },
+    {
+      "id": 8,
+      "type": "ControlNetLoader",
+      "pos": [850, 50],
+      "size": [315, 58],
+      "widgets_values": ["control_v11p_sd15_openpose.pth"]
+    },
+    {
+      "id": 9,
+      "type": "DWPreprocessor",
+      "pos": [850, 150],
+      "size": [315, 106],
+      "_note": "Extract pose from reference image/video"
+    },
+    {
+      "id": 10,
+      "type": "ControlNetApplyAdvanced",
+      "pos": [850, 300],
+      "size": [315, 186],
+      "widgets_values": [0.8, 0, 1],
+      "_note": "Apply pose control"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [1200, 150],
+      "size": [315, 262],
+      "widgets_values": [12345, "randomize", 20, 7.5, "euler_ancestral", "normal", 1]
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [1550, 200],
+      "size": [210, 46]
+    },
+    {
+      "id": 13,
+      "type": "VHS_VideoCombine",
+      "pos": [1800, 150],
+      "size": [315, 218],
+      "widgets_values": [8, 0, "video/h264-mp4", "AnimateDiff_Master", "output", true, true]
+    },
+    {
+      "id": 14,
+      "type": "IPAdapterFaceID",
+      "pos": [850, 520],
+      "size": [315, 186],
+      "_note": "Face transfer from reference image"
+    },
+    {
+      "id": 15,
+      "type": "LivePortraitProcess",
+      "pos": [850, 750],
+      "size": [315, 186],
+      "_note": "Motion mimicking from reference video"
+    }
+  ],
+  "groups": [
+    {
+      "title": "Base Model + Prompts",
+      "bounding": [40, 0, 780, 500],
+      "color": "#3f789e"
+    },
+    {
+      "title": "Feature Sliders",
+      "bounding": [40, 510, 350, 380],
+      "color": "#8A8"
+    },
+    {
+      "title": "Pose & Face Control",
+      "bounding": [840, 0, 350, 980],
+      "color": "#b58b2b"
+    },
+    {
+      "title": "Generation & Output",
+      "bounding": [1190, 100, 950, 350],
+      "color": "#a1a1a1"
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {"scale": 0.8}
+  },
+  "version": 0.4,
+  "_usage_notes": {
+    "age_slider": "Positive weight = older, Negative = younger. Try -0.5 to 0.5",
+    "muscle_slider": "Positive = more muscular. Try 0.2 to 0.6",
+    "pose_strength": "0.6-0.9 works well for most poses",
+    "face_weight": "0.7-1.0 for strong face transfer",
+    "models_available": [
+      "Realistic_Vision_V5.1_fp16-no-ema.safetensors (NSFW-capable)",
+      "sd_v1-5-pruned-emaonly.safetensors (base SD 1.5)"
+    ]
+  }
+}
