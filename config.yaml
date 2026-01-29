@@ -1,0 +1,111 @@
+# Local Video Gen - User Configuration
+# Copy to config.local.yaml and customize
+
+# =============================================================================
+# PATHS
+# =============================================================================
+paths:
+  comfyui: ~/ComfyUI
+  models: ~/ComfyUI/models
+  outputs: ./outputs
+  temp: /tmp/local-video-gen
+
+# =============================================================================
+# DEFAULT GENERATION SETTINGS
+# =============================================================================
+defaults:
+  # Video dimensions (16:9 recommended for most models)
+  width: 512
+  height: 288
+  
+  # Frame count (16-32 typical for AnimateDiff, affects VRAM)
+  frames: 16
+  fps: 8
+  
+  # Quality settings
+  steps: 20
+  cfg_scale: 7.5
+  sampler: euler_ancestral
+  scheduler: normal
+  
+  # Seed (-1 for random)
+  seed: -1
+
+# =============================================================================
+# MODEL PREFERENCES
+# =============================================================================
+models:
+  # Base checkpoint (placed in models/checkpoints/)
+  checkpoint: realisticVisionV51_v51VAE.safetensors
+  
+  # Motion module for AnimateDiff
+  motion_module: mm_sd_v15_v2.ckpt
+  
+  # ControlNet models
+  controlnet:
+    openpose: control_v11p_sd15_openpose.pth
+    depth: control_v11f1p_sd15_depth.pth
+  
+  # Face models (InsightFace)
+  face:
+    detection: buffalo_l
+    swap: inswapper_128.onnx
+    restore: GFPGANv1.4.pth
+
+# =============================================================================
+# FEATURE TOGGLES
+# =============================================================================
+features:
+  # Enable NSFW content generation (uses uncensored models)
+  nsfw_mode: false
+  
+  # Face swap settings
+  face_swap:
+    enabled: true
+    restore_face: true
+    restore_strength: 0.5
+  
+  # Pose control
+  pose_control:
+    enabled: true
+    preprocessor: dwpose  # dwpose | openpose
+    strength: 1.0
+  
+  # Sliders (LoRA-based)
+  sliders:
+    age:
+      enabled: false
+      weight: 0.0  # -1.0 (younger) to 1.0 (older)
+    body:
+      enabled: false
+      weight: 0.0  # -1.0 to 1.0
+
+# =============================================================================
+# PERFORMANCE (Apple Silicon)
+# =============================================================================
+performance:
+  # Device: mps (Apple Silicon), cuda (NVIDIA), cpu
+  device: mps
+  
+  # Memory management
+  low_vram_mode: false
+  offload_to_cpu: false
+  
+  # Batch size (1 recommended for video)
+  batch_size: 1
+
+# =============================================================================
+# OUTPUT SETTINGS
+# =============================================================================
+output:
+  # Format: mp4, gif, webm
+  format: mp4
+  
+  # Quality (for mp4: crf value, lower = better, 18-28 typical)
+  quality: 23
+  
+  # Naming: timestamp, sequential, prompt
+  naming: timestamp
+  
+  # Save intermediate frames
+  save_frames: false
