@@ -1,0 +1,22 @@
+[
+  {
+    "prompt": "a woman walking through autumn forest, golden leaves falling, cinematic lighting, 4k, detailed",
+    "negative": "blurry, low quality, distorted, deformed, ugly, bad anatomy"
+  },
+  {
+    "prompt": "ocean waves crashing on rocky shore at sunset, slow motion, peaceful, 4k",
+    "negative": "blurry, low quality, distorted"
+  },
+  {
+    "prompt": "a cat sitting on windowsill watching rain, cozy interior, soft lighting, detailed fur",
+    "negative": "blurry, low quality, ugly, distorted"
+  },
+  {
+    "prompt": "coffee being poured into cup, steam rising, macro shot, cinematic, warm colors",
+    "negative": "blurry, low quality"
+  },
+  {
+    "prompt": "city street at night, neon lights reflecting on wet pavement, cyberpunk atmosphere, 4k",
+    "negative": "blurry, low quality, distorted, ugly"
+  }
+]
