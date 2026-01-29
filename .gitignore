@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+ENV/
+.eggs/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+outputs/**/
+!outputs/README.md
+*.mp4
+*.gif
+*.webm
+*.png
+*.jpg
+*.jpeg
+!docs/**/*.png
+!docs/**/*.jpg
+
+# Models (too large for git)
+models/**/*.safetensors
+models/**/*.ckpt
+models/**/*.pth
+models/**/*.onnx
+models/**/*.bin
+
+# Temp
+/tmp/
+*.log
+*.tmp
+
+# Config with secrets
+config.local.yaml
+.env
